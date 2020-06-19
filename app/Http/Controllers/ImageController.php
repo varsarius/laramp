@@ -15,16 +15,30 @@ class ImageController extends Controller
 {
   public function show()
   {
+      $years = array();
+      if (Auth::check() && Auth::user()->name == 'Admin')
+        $imDates = Image::get(['date']);
+      else
+        $imDates = Image::where('is_verified', 1)->get(['date']);
+
+      foreach ($imDates as $imDate) {
+        if (isset($imDate->date))
+          array_push($years, substr($imDate->date,0,4));
+      }
+      $years = array_unique($years);
+
       if (Auth::check() && Auth::user()->name == 'Admin'){
         return view('admin', [
           //'years => Уникальные года Всё->Года->Уникальные года
-            'images' => Image::all()->sortBy('is_verified'),
-            'locations' => Location::all()
+            'images' => Image::orderBy('is_verified')->paginate(50),
+            'locations' => Location::all(),
+            'years' => $years
         ]);
       } else {
       		return view('main', [
-       		'images' => Image::all()->where('is_verified', 1),
-        	'locations' => Location::all()
+       		'images' => Image::where('is_verified', 1)->paginate(3),
+        	'locations' => Location::all(),
+          'years' => $years
       	]);
       }
   }
@@ -32,23 +46,15 @@ class ImageController extends Controller
   public function create(ImageRequest $request)
   {
 
-      // $data = $this->validate($request, [
-      //     'name' => 'required|string',
-      //     'description' => 'nullable|string',
-      //     'location_id' => 'nullable|numeric', // Переделать string на numeric \done
-      //     'date' => 'nullable|date', //Дата - я не понимать \done
-      //     'file' => 'required|image', // как-то надо сделать чтобы было только hpg, jpeg, img и др.image|mimes:jpeg,bmp,png|size:2000 \done
-      // ]);
-
       $image = new Image;
 
       $image->name = request('name');
 
-      if (isset($data['description']))
+      if (isset($request['description']))
           $image->description = request('description');
-      if (isset($data['location_id']))
+      if (isset($request['location_id']))
           $image->location_id = request('location_id');
-      if (isset($data['date']))
+      if (isset($request['date']))
           $image->date = request('date');
 
       $fileName =  $request->file('file')->getClientOriginalName();
@@ -57,15 +63,20 @@ class ImageController extends Controller
       $image->path = 'img/'.uniqid('', true).'.'.$fileActualExt;
       move_uploaded_file($request->file('file')->getPathName(), $image->path);
 
-      $image->save(); // не работает не пойми почему \теперь работает
+      $image->save();
 
-      return redirect('/');
+
+
+      return view('thanks', [
+        'image' => $image,
+        'locations' => Location::all()
+      ]);
   }
 
   public function filter(Request $request)
   {
       $data = $this->validate($request, [
-          'location_id' => 'nullable|numeric', // Переделать string на numeric \done
+          'location_id' => 'nullable|numeric',
           'year' => 'nullable|numeric'
       ]);
 
@@ -148,6 +159,6 @@ class ImageController extends Controller
       $image->date = request('date');
 
       $image->save();
-      return redirect('/');
+      return redirect('/')->withInputs();
     }
 }

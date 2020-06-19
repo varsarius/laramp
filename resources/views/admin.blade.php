@@ -27,7 +27,7 @@
                 <label class="mb-4">
                     Город
                 </label>
-                <select aria-selected="Кагул" name="location_id" class="browser-default custom-select custom-select-lg mb-3">
+                <select name="location_id" class="browser-default custom-select custom-select-lg mb-3">
                 <option value="">Выберите город</option>
                 @foreach($locations as $location)
                         <option value="{{$location->id}}">{{$location->name}}</option>
@@ -38,7 +38,12 @@
                 <label class="mb-4">
                     Год
                 </label>
-                <input name="year" value="2000" type="number" class="form-control">
+                <select name="year" class="browser-default custom-select custom-select-lg mb-3">
+                <option value="">Выберите год</option>
+                @foreach($years as $year)
+                  <option value="{{$year}}">{{$year}}</option>
+                @endforeach
+                </select>
             </div>
             <div class="row">
                 <div class="col-auto">
@@ -138,14 +143,22 @@
                     </div>
                 @endforeach
           </div>
+        <div style="padding: 0 45%;">
+            {{$images->links()}}
         </div>
-    </div>
+
+      </div>
+  </div>
 </div>
 
 
     <!-- Modal -->
-    <div class="modal fade" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal"
-         aria-hidden="true">
+        @if($errors->any())
+        <div class="modal fade show" style="display: block;" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal" aria-hidden="true">--}}
+        @else
+        <div class="modal fade" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal" aria-hidden="true">--}}
+        @endif
+
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
