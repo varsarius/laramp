@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="header">
+    <div class="header" style="position: fixed; z-index: 3; background-color: #12263F; width: 100vw; top: 0;">
         <div class="header-body">
             <div class="row align-items-center">
                 <div class="col">
@@ -10,7 +10,7 @@
                         Фотоальбом Молдовы
                     </h1>
                 </div>
-                <div class="col-auto" data-toggle="modal" data-target="#photo_modal">
+                <div class="col-auto" data-toggle="modal" style="margin-right: 50px;" data-target="#photo_modal">
                     <a href="#" class="btn btn-primary">
                         Добавить фото
                     </a>
@@ -20,21 +20,21 @@
         </div>
     </div>
     <div class="nav">
-        <form action="/filter" method="get">
+        <form id="filter" action="/" method="get">
             {{csrf_field()}}
             <div class="form-group">
-                <label class="mb-4">
+                <label class="mb-3">
                     Город
                 </label>
-                <select aria-selected="Кагул" name="location_id" class="browser-default custom-select custom-select-lg mb-3">
-                <option value="Выберите город">Выберите город</option>
+                <select name="location_id" class="browser-default custom-select custom-select-lg mb-3">
+                <option value="">Выберите город</option>
                 @foreach($locations as $location)
                         <option value="{{$location->id}}">{{$location->name}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label class="mb-4">
+                <label class="mb-3">
                     Год
                 </label>
                 <select name="year" class="browser-default custom-select custom-select-lg mb-3">
@@ -45,10 +45,10 @@
                 </select>
             </div>
             <div class="row">
-                <div class="col-auto">
+                <div class="col-auto" style="margin-top: 7%;">
                     <button type="submit" class="btn btn-primary">Применить фильтр</button>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto" style="margin-top: 7%;">
                     <a href="/"><button type="button" class="btn btn-primary">Сбросить</button></a>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                                             @endforeach
                                         </p>
 
-                                        <!-- Date -->
+                                       <!-- Date -->
                                         <p class="card-text small text-muted">
                                             {{$image->date}}
                                         </p>
@@ -98,7 +98,6 @@
                                             {{$image->description}}
                                         </p>
 
-
                                     </div>
                                 </div> <!-- / .row -->
 
@@ -107,102 +106,114 @@
 
                     </div>
                 @endforeach
-            </div>
-            <div style="padding: 0 45%;">
-                {{$images->links()}}
-            </div>
+          </div>
+        <div style="padding: 0 45%;">
+            {{$images->links()}}
         </div>
-    </div>
+
+      </div>
+  </div>
 </div>
 
 
-    <!-- Modal -->
+<!-- Modal -->
     @if($errors->any())
-    <div class="modal fade show" style="display: block;" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal" aria-hidden="true">--}}
+    <div class="modal fade show" style="display: block;" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal" aria-hidden="true">
     @else
-    <div class="modal fade" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal" aria-hidden="true">--}}
+    <div class="modal fade" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal" aria-hidden="true">
     @endif
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="photo_modal">Добавление фотографии</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @if($errors->any())
-                      <div class="alert alert-danger">
-                        <ul>
-                          @foreach($errors->all() as $error)
-                            <li>{{$error}}</li>
-                          @endforeach
-                        </ul>
-                      </div>
-                    @endif
-                    <form action="/photo" method="post" enctype="multipart/form-data" class="mb-4" data-select2-id="4">
-                        {{csrf_field()}}
-                        <div class="form-group">
-                            <label class="mb-4">
-                                Название фотографии
-                            </label>
-                            <input name="name" type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="mb-4">
-                                Описание
-                            </label>
-                            <textarea name="description" cols="30" rows="10" class="form-control"></textarea>
-                        </div>
 
-                        <div class="form-group">
-                            <label class="mb-4">
-                                Город
-                            </label>
-                        <select name="location_id" class="browser-default custom-select custom-select-lg mb-3">
-                            <option value="0">Выберите город</option>
-                            @foreach($locations as $location)
-                                <option value="{{$location->id}}">{{$location->name}}</option>
-                            @endforeach
-                        </select>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-12 col-md-12">
-
-                                <!-- Start date -->
-                                <div class="form-group">
-                                    <label>
-                                        Дата
-                                    </label>
-                                    <input name="date" type="date" class="form-control flatpickr-input" data-toggle="flatpickr">
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input name="file" type="file" class="custom-file-input" id="inputGroupFile02">
-                                <label class="custom-file-label" for="inputGroupFile02"
-                                       aria-describedby="inputGroupFileAddon02">Выберите файл file</label>
-                            </div>
-
-                        </div>
-                        <hr class="my-4">
-                        <div class="row">
-                            <div class="col"></div>
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                <button type="submit" class="btn btn-primary">Сохранить</button>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photo_modal">Добавление фотографии</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+              @if($errors->any())
+                <div class="alert alert-danger">
+                  <ul>
+                    @foreach($errors->all() as $error)
+                      @if($error != "")
+                        <li>{{$error}}</li>
+                      @endif
+                    @endforeach
+                      <li>Пожалуйста, выберите файл заново</li>
+                  </ul>
+                </div>
+              @endif
+                <form action="/photo" method="post" enctype="multipart/form-data" class="mb-4" data-select2-id="4">
+                    {{csrf_field()}}
+                    <div class="form-group">
+                        <label class="mb-4">
+                            Название фотографии
+                        </label>
+                        <input name="name" value="{{ Request::old('name') }}" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-4">
+                            Описание
+                        </label>
+                        <textarea name="description" cols="30" rows="10" class="form-control">{{ Request::old('description') }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="mb-4">
+                            Город
+                        </label>
+                    <select name="location_id" class="browser-default custom-select custom-select-lg mb-3">
+                        <option value="0">Выберите город</option>
+                        @foreach($locations as $location)
+                            @if($errors->any)
+                              @if(Request::old('location_id') == $location->id)
+                                <option value="{{$location->id}}" selected>{{$location->name}}</option>
+                              @else
+                                <option value="{{$location->id}}">{{$location->name}}</option>
+                              @endif
+                            @else
+                              <option value="{{$location->id}}">{{$location->name}}</option>
+                            @endif()
+                        @endforeach
+                    </select>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+
+                            <!-- Start date -->
+                            <div class="form-group">
+                                <label>
+                                    Дата
+                                </label>
+                                <input name="date" value="{{ Request::old('date') }}" type="date" class="form-control flatpickr-input" data-toggle="flatpickr">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="custom-file">
+                            <input name="file" type="file" value="{{ Request::old('file') }}" class="custom-file-input" id="inputGroupFile02">
+                            <label class="custom-file-label" for="inputGroupFile02"
+                                   aria-describedby="inputGroupFileAddon02">Выберите файл file</label>
+                        </div>
+
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
     </div>
-
+</div>
 @endsection

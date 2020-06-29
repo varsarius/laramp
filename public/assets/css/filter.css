@@ -1,0 +1,36 @@
+.nav{
+  margin-top: 100px;
+}
+#filter {
+  border: #1E3A5C solid 3px;
+  padding: 3px 10px;
+  width: 80%;
+  margin: 0 auto 15px auto;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-gap: 1em;
+  align-items: center;
+}
+#filter > div {
+  width: 100%;
+  float: right;
+}
+
+#filter > .row {
+  margin-bottom: 29px;
+}
+@media screen and (max-width: 990px) {
+  .nav {
+    margin-top: 130px;
+  }
+}
+@media screen and (max-width: 612px) {
+  .nav {
+    margin-top: 150px;
+  }
+}
+@media screen and (max-width: 590px) {
+  .nav {
+    margin-top: 170px;
+  }
+}

@@ -19,7 +19,7 @@
         <div class="tab-pane fade active show" id="tabPaneOne" role="tabpanel">
             <div class="row listAlias">
               <!-- Card -->
-                 <div class="card" style="margin: 10% 30%">
+                 <div class="card" style="margin: 10% auto">
                      <img src="{{$image->path}}" alt="{{$image->name}}" class="card-img-top" height="400">
                      <div class="card-body">
                          <div class="row align-items-center">

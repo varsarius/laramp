@@ -5,6 +5,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="photo_modal">Редактирование фотографии</h5>
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
             </div>
             <div class="modal-body">
                 <form action="/editsave/{{$image->id}}" method="post" enctype="multipart/form-data" class="mb-4" data-select2-id="4">

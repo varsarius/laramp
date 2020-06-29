@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'ImageController@show');
-Route::get('/filter', 'ImageController@filter');
 
 Route::get('/login', 'AuthController@loginPage');
 Route::get('/logout', 'AuthController@logout');

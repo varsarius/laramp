@@ -36,7 +36,7 @@ class ImageRequest extends FormRequest
     {
       return [
         'name.required' => 'Вы не дали название для фотографии!',
-        'file.required' => 'Файл не выбран',
+        'file.required' => '',
         'name.max' => 'Длина названия не должна превышать 255 символов',
         'file.image' => 'Файл должен быть картинкой или изображением или фотографией'
       ];
